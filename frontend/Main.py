@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 import img
+from backend.Cadastrar import Cadastrar
+from backend.Listar import Listar
 
 janela = Tk()
 
@@ -63,17 +65,21 @@ class Aplicação:
         self.entryId.place(relx=0.72, rely=0.44, relwidth=0.09)
 
     def criarBotões(self):
-        self.btnCadastar = Button(self.topFrame, text='CADASTRAR', bg='#696969', fg='white')
+        self.btnCadastar = Button(self.topFrame, text='CADASTRAR', bg='#696969', fg='white', command=lambda:
+                                  [Cadastrar.cadastrarProdutos(self, str(self.entryNome.get()).title(),
+                                    float(self.entryPreço.get()), int(self.entryQuantidade.get()),
+                                    str(self.entryDistribuidora.get()).title()), self.limparCampos(), self.criarTabelaProdutos()])
         self.btnCadastar.place(relx=0.89, rely=0.2)
 
-        self.btnCadastar = Button(self.topFrame, text='ATUALIZAR', bg='#696969', fg='white')
-        self.btnCadastar.place(relx=0.89, rely=0.4, relwidth=0.1)
+        self.btnAtualizar = Button(self.topFrame, text='ATUALIZAR', bg='#696969', fg='white')
+        self.btnAtualizar.place(relx=0.89, rely=0.4, relwidth=0.1)
 
-        self.btnCadastar = Button(self.topFrame, text='DELETAR', bg='#696969', fg='white')
-        self.btnCadastar.place(relx=0.89, rely=0.6, relwidth=0.1)
+        self.btnDeletar = Button(self.topFrame, text='DELETAR', bg='#696969', fg='white')
+        self.btnDeletar.place(relx=0.89, rely=0.6, relwidth=0.1)
 
-        self.btnCadastar = Button(self.topFrame, text='LIMPAR', bg='#696969', fg='white')
-        self.btnCadastar.place(relx=0.89, rely=0.78, relwidth=0.1)
+        self.btnLimpar = Button(self.topFrame, text='LIMPAR', bg='#696969', fg='white', command=self.limparCampos)
+        self.btnLimpar.place(relx=0.89, rely=0.78, relwidth=0.1)
+
     def criarTabelaProdutos(self):
         self.tabelaProdutos = ttk.Treeview(self.botomFrame, column=('col1', 'col2', 'col3', 'col4', 'col5'))
         self.tabelaProdutos.heading('#0', text='')
@@ -90,6 +96,17 @@ class Aplicação:
         self.tabelaProdutos.column('#4', width=100)
         self.tabelaProdutos.column('#5', width=200)
         self.tabelaProdutos.place(relx=0.01, rely=0.01, relwidth=0.69, relheight=0.98)
+
+        self.tabelaProdutos.delete(*self.tabelaProdutos.get_children())
+        for i in Listar.listarProdutos(self):
+            self.tabelaProdutos.insert('', END, values=i)
+
+    def limparCampos(self):
+        self.entryNome.delete(0, END)
+        self.entryPreço.delete(0, END)
+        self.entryQuantidade.delete(0, END)
+        self.entryDistribuidora.delete(0, END)
+        self.entryId.delete(0, END)
 
 
 Aplicação()
