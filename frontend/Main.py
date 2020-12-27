@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+import img
 
 janela = Tk()
 
@@ -29,7 +30,7 @@ class Aplicação:
         self.botomFrame.place(relx=0.01, rely=0.52, relwidth=0.98, relheight=0.47)
 
     def LabelsEntrys(self):
-        self.icone = PhotoImage(file='C:\\Users\\Admin\\Desktop\\crud\\img\\icone2.png')
+        self.icone = PhotoImage(file='img/icone2.png')
         self.labelIcone = Label(self.botomFrame, image=self.icone, bg='#F0E68C')
         self.labelIcone.place(relx=0.72, rely=0.02, relwidth=0.28, relheight=0.98)
 
