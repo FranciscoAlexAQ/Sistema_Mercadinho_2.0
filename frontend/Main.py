@@ -10,7 +10,41 @@ from backend.Deletar import Deletar
 janela = Tk()
 
 
-class Aplicação:
+class FunçõesExtras:
+    def limparCampos(self):
+        self.entryNome.delete(0, END)
+        self.entryPreço.delete(0, END)
+        self.entryQuantidade.delete(0, END)
+        self.entryDistribuidora.delete(0, END)
+        self.entryId.delete(0, END)
+
+    def duploClique(self, event):
+        self.tabelaProdutos.selection()
+
+        for i in self.tabelaProdutos.selection():
+            col1, col2, col3, col4, col5 = self.tabelaProdutos.item(i, 'values')
+            self.entryId.insert(END, col1)
+            self.entryNome.insert(END, col2)
+            self.entryPreço.insert(END, col3)
+            self.entryQuantidade.insert(END, col4)
+            self.entryDistribuidora.insert(END, col5)
+
+    def atualizarVerifica(self):
+        if self.entryId.get() == '' or self.entryNome.get() == '' or self.entryPreço.get() == '' or self.entryQuantidade.get() == '' or \
+                self.entryDistribuidora.get() == '':
+            print(messagebox.showinfo('Campos Vazio', 'Dê um duplo clique em um registro da tabela para atualizá-lo'))
+        else:
+            Atualizar.atualizarProdutos(self, int(self.entryId.get()), self.entryNome.get(), float(self.entryPreço.get()),
+                                        int(self.entryQuantidade.get()), self.entryDistribuidora.get())
+
+    def deletarVerifica(self):
+        if self.entryId.get() == '':
+            print(messagebox.showinfo('Campo Vazio', 'Por favor, informe o código do produto para excluir'))
+        else:
+            Deletar.deletarProdutos(self, int(self.entryId.get()))
+
+
+class Aplicação(FunçõesExtras):
     def __init__(self):
         self.configurarDaTela()
         self.criarFrames()
@@ -79,7 +113,7 @@ class Aplicação:
         self.btnAtualizar.place(relx=0.89, rely=0.4, relwidth=0.1)
 
         self.btnDeletar = Button(self.topFrame, text='DELETAR', bg='#696969', fg='white', command=lambda:
-                                 [Deletar.deletarProdutos(self, int(self.entryId.get())), self.criarTabelaProdutos()])
+            [self.deletarVerifica(), self.limparCampos(), self.criarTabelaProdutos()])
         self.btnDeletar.place(relx=0.89, rely=0.6, relwidth=0.1)
 
         self.btnLimpar = Button(self.topFrame, text='LIMPAR', bg='#696969', fg='white', command=self.limparCampos)
@@ -106,32 +140,6 @@ class Aplicação:
         self.tabelaProdutos.bind('<Double-1>', self.duploClique)
         for i in Listar.listarProdutos(self):
             self.tabelaProdutos.insert('', END, values=i)
-
-    def limparCampos(self):
-        self.entryNome.delete(0, END)
-        self.entryPreço.delete(0, END)
-        self.entryQuantidade.delete(0, END)
-        self.entryDistribuidora.delete(0, END)
-        self.entryId.delete(0, END)
-
-    def duploClique(self, event):
-        self.tabelaProdutos.selection()
-
-        for i in self.tabelaProdutos.selection():
-            col1, col2, col3, col4, col5 = self.tabelaProdutos.item(i, 'values')
-            self.entryId.insert(END, col1)
-            self.entryNome.insert(END, col2)
-            self.entryPreço.insert(END, col3)
-            self.entryQuantidade.insert(END, col4)
-            self.entryDistribuidora.insert(END, col5)
-
-    def atualizarVerifica(self):
-        if self.entryId.get() == '' or self.entryNome.get() == '' or self.entryPreço.get() == '' or self.entryQuantidade.get() == '' or \
-                self.entryDistribuidora.get() == '':
-            print(messagebox.showinfo('Campos Vazio', 'Dê um duplo clique em um registro da tabela para atualizá-lo'))
-        else:
-            Atualizar.atualizarProdutos(self, int(self.entryId.get()), self.entryNome.get(), float(self.entryPreço.get()),
-                                        int(self.entryQuantidade.get()), self.entryDistribuidora.get())
 
 
 Aplicação()
