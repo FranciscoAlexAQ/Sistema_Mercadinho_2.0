@@ -2,6 +2,7 @@ from backend.Conexao import Conexao
 import sqlite3
 
 
+# função responsável por ler todos os regitros da tabela
 class Listar:
     def listarProdutos(self):
         try:

@@ -2,6 +2,7 @@ import sqlite3
 import os
 
 
+# função responsável por conectar ao banco e criar tabela
 class Conexao:
     def conectarBanco(self):
         try:

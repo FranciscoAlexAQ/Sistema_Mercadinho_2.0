@@ -2,6 +2,7 @@ from backend.Conexao import Conexao
 import sqlite3
 
 
+# função responsável po apagar os regitros da tabela
 class Deletar:
     def deletarProdutos(self, id):
         try:

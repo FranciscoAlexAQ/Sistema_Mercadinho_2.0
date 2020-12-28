@@ -10,7 +10,10 @@ from backend.Deletar import Deletar
 janela = Tk()
 
 
+# Esta class traz métodos de verificação e eventos
 class FunçõesExtras:
+
+    # Limpa todos os campos
     def limparCampos(self):
         self.entryNome.delete(0, END)
         self.entryPreço.delete(0, END)
@@ -18,6 +21,7 @@ class FunçõesExtras:
         self.entryDistribuidora.delete(0, END)
         self.entryId.delete(0, END)
 
+    # Ao fazer duplo clique em um registro, colocar os valores desse registro nos seus respctivos campos
     def duploClique(self, event):
         self.tabelaProdutos.selection()
 
@@ -29,6 +33,7 @@ class FunçõesExtras:
             self.entryQuantidade.insert(END, col4)
             self.entryDistribuidora.insert(END, col5)
 
+    # Verifica se todos os campos estão preenchidos antes de atualizar
     def atualizarVerifica(self):
         if self.entryId.get() == '' or self.entryNome.get() == '' or self.entryPreço.get() == '' or self.entryQuantidade.get() == '' or \
                 self.entryDistribuidora.get() == '':
@@ -37,6 +42,7 @@ class FunçõesExtras:
             Atualizar.atualizarProdutos(self, int(self.entryId.get()), self.entryNome.get(), float(self.entryPreço.get()),
                                         int(self.entryQuantidade.get()), self.entryDistribuidora.get())
 
+    # Verifica se o campo 'código' está vazio, se tiver, não excluir produto
     def deletarVerifica(self):
         if self.entryId.get() == '':
             print(messagebox.showinfo('Campo Vazio', 'Por favor, informe o código do produto para excluir'))
@@ -44,6 +50,7 @@ class FunçõesExtras:
             Deletar.deletarProdutos(self, int(self.entryId.get()))
 
 
+# Classe principal
 class Aplicação(FunçõesExtras):
     def __init__(self):
         self.configurarDaTela()
@@ -53,6 +60,7 @@ class Aplicação(FunçõesExtras):
         self.criarTabelaProdutos()
         janela.mainloop()
 
+    # configuração da tela principal
     def configurarDaTela(self):
         janela.title('Cadastro de Produtos')
         janela.geometry('800x600')
@@ -61,6 +69,7 @@ class Aplicação(FunçõesExtras):
         janela.maxsize(width=900, height=520)
         janela.configure(bg='#F0E68C')
 
+    # criação e posicionamento dos Frames
     def criarFrames(self):
         self.topFrame = Frame(janela, bg='#F0E68C', bd=4, highlightbackground='#696969', highlightthickness=3)
         self.topFrame.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.5)
@@ -68,6 +77,7 @@ class Aplicação(FunçõesExtras):
         self.botomFrame = Frame(janela, bg='#F0E68C', bd=3, highlightbackground='#696969', highlightthickness=3)
         self.botomFrame.place(relx=0.01, rely=0.52, relwidth=0.98, relheight=0.47)
 
+    # criação e posicionamento dos Labels e Entrys
     def LabelsEntrys(self):
         self.icone = PhotoImage(file='img/icone2.png')
         self.labelIcone = Label(self.botomFrame, image=self.icone, bg='#F0E68C')
@@ -101,6 +111,7 @@ class Aplicação(FunçõesExtras):
         self.entryId = Entry(self.topFrame)
         self.entryId.place(relx=0.72, rely=0.44, relwidth=0.09)
 
+    # criação, posicionamento e atribuição de funções aos botões
     def criarBotões(self):
         self.btnCadastar = Button(self.topFrame, text='CADASTRAR', bg='#696969', fg='white', command=lambda:
                     [Cadastrar.cadastrarProdutos(self, str(self.entryNome.get()).title(),
@@ -119,6 +130,7 @@ class Aplicação(FunçõesExtras):
         self.btnLimpar = Button(self.topFrame, text='LIMPAR', bg='#696969', fg='white', command=self.limparCampos)
         self.btnLimpar.place(relx=0.89, rely=0.78, relwidth=0.1)
 
+    # criação, posicionamento e preenchimento da tabela
     def criarTabelaProdutos(self):
         self.tabelaProdutos = ttk.Treeview(self.botomFrame, column=('col1', 'col2', 'col3', 'col4', 'col5'))
         self.tabelaProdutos.heading('#0', text='')
@@ -135,11 +147,14 @@ class Aplicação(FunçõesExtras):
         self.tabelaProdutos.column('#4', width=100)
         self.tabelaProdutos.column('#5', width=200)
         self.tabelaProdutos.place(relx=0.01, rely=0.01, relwidth=0.69, relheight=0.98)
-        self.tabelaProdutos.delete(*self.tabelaProdutos.get_children())
 
-        self.tabelaProdutos.bind('<Double-1>', self.duploClique)
+        # Insere os registros na tabela
+        self.tabelaProdutos.delete(*self.tabelaProdutos.get_children())
         for i in Listar.listarProdutos(self):
             self.tabelaProdutos.insert('', END, values=i)
+
+        # comando pertecente à função duploClique
+        self.tabelaProdutos.bind('<Double-1>', self.duploClique)
 
 
 Aplicação()

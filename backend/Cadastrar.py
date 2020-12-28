@@ -2,6 +2,7 @@ from backend.Conexao import Conexao
 import sqlite3
 
 
+# função responsável por cadastrar todos os regitros na tabela
 class Cadastrar:
     def cadastrarProdutos(self, nome, preco, quantidade, distribuidora):
         try:
