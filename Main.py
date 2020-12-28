@@ -1,11 +1,11 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-import img
-from backend.Cadastrar import Cadastrar
-from backend.Listar import Listar
-from backend.Atualizar import Atualizar
-from backend.Deletar import Deletar
+import os
+import Cadastrar
+import Listar
+import Atualizar
+import Deletar
 
 janela = Tk()
 
@@ -39,15 +39,15 @@ class FunçõesExtras:
                 self.entryDistribuidora.get() == '':
             print(messagebox.showinfo('Campos Vazio', 'Dê um duplo clique em um registro da tabela para atualizá-lo'))
         else:
-            Atualizar.atualizarProdutos(self, int(self.entryId.get()), self.entryNome.get(), float(self.entryPreço.get()),
-                                        int(self.entryQuantidade.get()), self.entryDistribuidora.get())
+            Atualizar.Atualizar.atualizarProdutos(self, int(self.entryId.get()), self.entryNome.get(), float(self.entryPreço.get()),
+                                                  int(self.entryQuantidade.get()), self.entryDistribuidora.get())
 
     # Verifica se o campo 'código' está vazio, se tiver, não excluir produto
     def deletarVerifica(self):
         if self.entryId.get() == '':
             print(messagebox.showinfo('Campo Vazio', 'Por favor, informe o código do produto para excluir'))
         else:
-            Deletar.deletarProdutos(self, int(self.entryId.get()))
+            Deletar.Deletar.deletarProdutos(self, int(self.entryId.get()))
 
 
 # Classe principal
@@ -79,7 +79,8 @@ class Aplicação(FunçõesExtras):
 
     # criação e posicionamento dos Labels e Entrys
     def LabelsEntrys(self):
-        self.icone = PhotoImage(file='img/icone2.png')
+
+        self.icone = PhotoImage(file='img\\icone2.png')
         self.labelIcone = Label(self.botomFrame, image=self.icone, bg='#F0E68C')
         self.labelIcone.place(relx=0.72, rely=0.02, relwidth=0.28, relheight=0.98)
 
@@ -114,7 +115,7 @@ class Aplicação(FunçõesExtras):
     # criação, posicionamento e atribuição de funções aos botões
     def criarBotões(self):
         self.btnCadastar = Button(self.topFrame, text='CADASTRAR', bg='#696969', fg='white', command=lambda:
-                    [Cadastrar.cadastrarProdutos(self, str(self.entryNome.get()).title(),
+                    [Cadastrar.Cadastrar.cadastrarProdutos(self, str(self.entryNome.get()).title(),
                     float(self.entryPreço.get()), int(self.entryQuantidade.get()),
                     str(self.entryDistribuidora.get()).title()), self.limparCampos(), self.criarTabelaProdutos()])
         self.btnCadastar.place(relx=0.89, rely=0.2)
@@ -146,15 +147,15 @@ class Aplicação(FunçõesExtras):
         self.tabelaProdutos.column('#3', width=100)
         self.tabelaProdutos.column('#4', width=100)
         self.tabelaProdutos.column('#5', width=200)
+
+        # comando pertecente à função duploClique
+        self.tabelaProdutos.bind('<Double-1>', self.duploClique)
         self.tabelaProdutos.place(relx=0.01, rely=0.01, relwidth=0.69, relheight=0.98)
 
         # Insere os registros na tabela
         self.tabelaProdutos.delete(*self.tabelaProdutos.get_children())
-        for i in Listar.listarProdutos(self):
+        for i in Listar.Listar.listarProdutos(self):
             self.tabelaProdutos.insert('', END, values=i)
-
-        # comando pertecente à função duploClique
-        self.tabelaProdutos.bind('<Double-1>', self.duploClique)
 
 
 Aplicação()

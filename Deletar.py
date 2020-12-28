@@ -1,4 +1,4 @@
-from backend.Conexao import Conexao
+from Conexao import Conexao
 import sqlite3
 
 

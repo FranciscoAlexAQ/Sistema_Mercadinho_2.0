@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import sys
 
 
 # função responsável por conectar ao banco e criar tabela
